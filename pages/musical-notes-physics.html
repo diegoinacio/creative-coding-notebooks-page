@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- ! custom meta tags -->
+    <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon" />
+    <title>The physics of musical notes</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="author" content="Diego Inácio" />
+    <meta
+      property="og:url"
+      content="https://diegoinacio.github.io/creative-coding-notebooks/pages/musical-notes-physics.html"
+    />
+    <meta
+      name="title"
+      property="og:title"
+      content="The physics of musical notes >> Creative Coding Notebooks | Diego Inácio"
+    />
+    <meta
+      name="description"
+      property="og:description"
+      content="A brief overview of how to calculate the frequency of notes and their wavelengths."
+    />
+    <meta
+      name="image"
+      property="og:image"
+      content="https://diegoinacio.github.io/creative-coding-notebooks/images/thumb_musical-notes-physics.jpg"
+    />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:type" content="article" />
+    <meta property="article:author" content="Diego Inácio" />
+    <meta property="article:section" content="Creative Coding Notebooks" />
+    <!-- /! custom meta tags -->
+    <!-- ! custom notebook style -->
+    <link rel="stylesheet" href="../assets/css/notebook.css" />
+    <!-- /! custom notebook style -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+
+    <style type="text/css">
+      .bp3-dialog-container.bp3-overlay-enter-active > .bp3-dialog,
+      .bp3-dialog-container.bp3-overlay-appear-active > .bp3-dialog {
+        opacity: 1;
+        -webkit-transform: scale(1);
+        transform: scale(1);
+        -webkit-transition-property: opacity, -webkit-transform;
+        transition-property: opacity, -webkit-transform;
+        transition-property: opacity, transform;
+        transition-property: opacity, transform, -webkit-transform;
+        -webkit-transition-duration: 300ms;
+        transition-duration: 300ms;
+        -webkit-transition-timing-function: cubic-bezier(
+          0.54,
+          1.12,
+          0.38,
+          1.11
+        );
+        transition-timing-function: cubic-bezier(0.54, 1.12, 0.38, 1.11);
+        -webkit-transition-delay: 0;
+        transition-delay: 0;
+      }
+
+      .bp3-dialog-container.bp3-overlay-exit-active > .bp3-dialog {
+        opacity: 0;
+        -webkit-transform: scale(0.5);
+        transform: scale(0.5);
+        -webkit-transition-property: opacity, -webkit-transform;
+        transition-property: opacity, -webkit-transform;
+        transition-property: opacity, transform;
+        transition-property: opacity, transform, -webkit-transform;
+        -webkit-transition-duration: 300ms;
+        transition-duration: 300ms;
+        -webkit-transition-timing-function: cubic-bezier(
+          0.54,
+          1.12,
+          0.38,
+          1.11
+        );
+        transition-timing-function: cubic-bezier(0.54, 1.12, 0.38, 1.11);
+        -webkit-transition-delay: 0;
+        transition-delay: 0;
+      }
+
+      .bp3-control.bp3-radio input:checked ~ .bp3-control-indicator::before {
+        background-image: radial-gradient(
+          #ffffff,
+          #ffffff 28%,
+          transparent 32%
+        );
+      }
+
+      .bp3-popover-enter-active > .bp3-popover,
+      .bp3-popover-appear-active > .bp3-popover {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+        -webkit-transition-property: -webkit-transform;
+        transition-property: -webkit-transform;
+        transition-property: transform;
+        transition-property: transform, -webkit-transform;
+        -webkit-transition-duration: 300ms;
+        transition-duration: 300ms;
+        -webkit-transition-timing-function: cubic-bezier(
+          0.54,
+          1.12,
+          0.38,
+          1.11
+        );
+        transition-timing-function: cubic-bezier(0.54, 1.12, 0.38, 1.11);
+        -webkit-transition-delay: 0;
+        transition-delay: 0;
+      }
+
+      .bp3-popover-exit-active > .bp3-popover {
+        -webkit-transform: scale(0.3);
+        transform: scale(0.3);
+        -webkit-transition-property: -webkit-transform;
+        transition-property: -webkit-transform;
+        transition-property: transform;
+        transition-property: transform, -webkit-transform;
+        -webkit-transition-duration: 300ms;
+        transition-duration: 300ms;
+        -webkit-transition-timing-function: cubic-bezier(
+          0.54,
+          1.12,
+          0.38,
+          1.11
+        );
+        transition-timing-function: cubic-bezier(0.54, 1.12, 0.38, 1.11);
+        -webkit-transition-delay: 0;
+        transition-delay: 0;
+      }
+
+      .bp3-toast.bp3-toast-enter-active,
+      .bp3-toast.bp3-toast-appear-active {
+        -webkit-transform: translateY(0);
+        transform: translateY(0);
+        -webkit-transition-property: -webkit-transform;
+        transition-property: -webkit-transform;
+        transition-property: transform;
+        transition-property: transform, -webkit-transform;
+        -webkit-transition-duration: 300ms;
+        transition-duration: 300ms;
+        -webkit-transition-timing-function: cubic-bezier(
+          0.54,
+          1.12,
+          0.38,
+          1.11
+        );
+        transition-timing-function: cubic-bezier(0.54, 1.12, 0.38, 1.11);
+        -webkit-transition-delay: 0;
+        transition-delay: 0;
+      }
+
+      .bp3-toast.bp3-toast-enter-active ~ .bp3-toast,
+      .bp3-toast.bp3-toast-appear-active ~ .bp3-toast {
+        -webkit-transform: translateY(0);
+        transform: translateY(0);
+        -webkit-transition-property: -webkit-transform;
+        transition-property: -webkit-transform;
+        transition-property: transform;
+        transition-property: transform, -webkit-transform;
+        -webkit-transition-duration: 300ms;
+        transition-duration: 300ms;
+        -webkit-transition-timing-function: cubic-bezier(
+          0.54,
+          1.12,
+          0.38,
+          1.11
+        );
+        transition-timing-function: cubic-bezier(0.54, 1.12, 0.38, 1.11);
+        -webkit-transition-delay: 0;
+        transition-delay: 0;
+      }
+
+      .CodeMirror-selectedtext.cm-searching {
+        background-color: var(
+          --jp-search-selected-match-background-color
+        ) !important;
+        color: var(--jp-search-selected-match-color) !important;
+      }
+    </style>
+
+    <!-- Load mathjax -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-MML-AM_CHTML-full,Safe"></script>
+    <!-- MathJax configuration -->
+    <script type="text/x-mathjax-config">
+      init_mathjax = function() {
+          if (window.MathJax) {
+          // MathJax loaded
+              MathJax.Hub.Config({
+                  TeX: {
+                      equationNumbers: {
+                      autoNumber: "AMS",
+                      useLabelIds: true
+                      }
+                  },
+                  tex2jax: {
+                      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+                      displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                      processEscapes: true,
+                      processEnvironments: true
+                  },
+                  displayAlign: 'center',
+                  CommonHTML: {
+                      linebreaks: {
+                      automatic: true
+                      }
+                  },
+                  "HTML-CSS": {
+                      linebreaks: {
+                      automatic: true
+                      }
+                  }
+              });
+
+              MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+          }
+      }
+      init_mathjax();
+    </script>
+    <!-- End of mathjax configuration -->
+  </head>
+  <body
+    class="jp-Notebook"
+    data-jp-theme-light="true"
+    data-jp-theme-name="JupyterLab Light"
+  >
+    <!-- ! custom navbar -->
+    <div class="notebook-navbar">
+      <a href="http://diegoinacio.github.io/creative-coding-notebooks/">
+        Return to <span>Creative Coding Notebooks</span>
+      </a>
+    </div>
+    <!-- /! custom navbar -->
+    <div class="jp-Cell-inputWrapper">
+      <div class="jp-InputPrompt jp-InputArea-prompt"></div>
+      <div
+        class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput"
+        data-mime-type="text/markdown"
+      >
+        <h1 id="The-physics-of-musical-notes">
+          The physics of musical notes<a
+            class="anchor-link"
+            href="#The-physics-of-musical-notes"
+            >¶</a
+          >
+        </h1>
+        <hr />
+        <ul>
+          <li>Author: Diego Inácio</li>
+          <li>
+            GitHub:
+            <a href="https://github.com/diegoinacio">github.com/diegoinacio</a>
+          </li>
+          <li>
+            Notebook:
+            <a
+              href="https://github.com/diegoinacio/creative-coding-notebooks/blob/master/Sound-Design/musical-notes-physics.ipynb"
+              >musical-notes-physics.ipynb</a
+            >
+          </li>
+        </ul>
+        <hr />
+        <p>
+          A brief overview of how to calculate the frequency of notes and their
+          wavelengths.
+        </p>
+      </div>
+    </div>
+    <div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+      <div class="jp-Cell-inputWrapper">
+        <div class="jp-InputArea jp-Cell-inputArea">
+          <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1]:</div>
+          <div
+            class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor"
+            data-type="inline"
+          >
+            <div class="CodeMirror cm-s-jupyter">
+              <div class="highlight hl-ipython3">
+                <pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Audio</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+</pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+      <div class="jp-Cell-inputWrapper">
+        <div class="jp-InputArea jp-Cell-inputArea">
+          <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[2]:</div>
+          <div
+            class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor"
+            data-type="inline"
+          >
+            <div class="CodeMirror cm-s-jupyter">
+              <div class="highlight hl-ipython3">
+                <pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">'figure.figsize'</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+</pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="jp-Cell-inputWrapper">
+      <div class="jp-InputPrompt jp-InputArea-prompt"></div>
+      <div
+        class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput"
+        data-mime-type="text/markdown"
+      >
+        $$ \large f_n=f_0 \times a^{n-49} $$
+        <p>where:</p>
+        <ul>
+          <li>
+            $f_{0}$ is the reference frequency for $A_4$, usually is 440 Hz;
+          </li>
+          <li>$a$ is equivalent to $\sqrt[12]{2}$ or $2^{\frac{1}{12}}$;</li>
+          <li>$n$ denotes the note index.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+      <div class="jp-Cell-inputWrapper">
+        <div class="jp-InputArea jp-Cell-inputArea">
+          <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
+          <div
+            class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor"
+            data-type="inline"
+          >
+            <div class="CodeMirror cm-s-jupyter">
+              <div class="highlight hl-ipython3">
+                <pre><span></span><span class="k">def</span> <span class="nf">frequencies</span><span class="p">(</span><span class="n">f0</span><span class="o">=</span><span class="mi">440</span><span class="p">,</span> <span class="n">no</span><span class="o">=</span><span class="mi">9</span><span class="p">):</span>
+    <span class="sd">'''</span>
+<span class="sd">    Returns the frequency table for all note within the octaves 0-8</span>
+<span class="sd">    no = number of octaves</span>
+<span class="sd">    '''</span>
+    <span class="n">ne</span> <span class="o">=</span> <span class="mi">12</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">ne</span><span class="p">)</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">no</span><span class="o">*</span><span class="n">ne</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">no</span><span class="p">,</span> <span class="n">ne</span><span class="p">))</span><span class="o">.</span><span class="n">T</span> <span class="o">-</span> <span class="mi">8</span>
+    <span class="k">return</span> <span class="n">f0</span><span class="o">*</span><span class="n">a</span><span class="o">**</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">49</span><span class="p">)</span>
+</pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+      <div class="jp-Cell-inputWrapper">
+        <div class="jp-InputArea jp-Cell-inputArea">
+          <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[4]:</div>
+          <div
+            class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor"
+            data-type="inline"
+          >
+            <div class="CodeMirror cm-s-jupyter">
+              <div class="highlight hl-ipython3">
+                <pre><span></span><span class="k">def</span> <span class="nf">wavelengths</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mi">343</span><span class="p">):</span>
+    <span class="sd">'''</span>
+<span class="sd">    Returns the wavelength table in cm</span>
+<span class="sd">    c is the speed of sound in air. Temperature 20°C</span>
+<span class="sd">    '''</span>
+    <span class="k">return</span> <span class="mi">100</span><span class="o">*</span><span class="n">c</span><span class="o">/</span><span class="n">f</span>
+</pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+      <div class="jp-Cell-inputWrapper">
+        <div class="jp-InputArea jp-Cell-inputArea">
+          <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div>
+          <div
+            class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor"
+            data-type="inline"
+          >
+            <div class="CodeMirror cm-s-jupyter">
+              <div class="highlight hl-ipython3">
+                <pre><span></span><span class="n">fn</span> <span class="o">=</span> <span class="n">frequencies</span><span class="p">()</span>        <span class="c1"># f in Hz</span>
+<span class="n">wl</span> <span class="o">=</span> <span class="n">wavelengths</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>      <span class="c1"># wavelenght in cm</span>
+<span class="n">fw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">fn</span><span class="p">,</span> <span class="n">wl</span><span class="p">))</span>
+<span class="n">fw</span> <span class="o">=</span> <span class="n">fw</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
+    <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">order</span><span class="o">=</span><span class="s1">'F'</span>
+<span class="p">)</span>
+</pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+      <div class="jp-Cell-inputWrapper">
+        <div class="jp-InputArea jp-Cell-inputArea">
+          <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[6]:</div>
+          <div
+            class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor"
+            data-type="inline"
+          >
+            <div class="CodeMirror cm-s-jupyter">
+              <div class="highlight hl-ipython3">
+                <pre><span></span><span class="n">octaves</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">'Octave </span><span class="si">{0}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">o</span><span class="p">),</span> <span class="n">e</span><span class="p">)</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="p">[</span><span class="sa">r</span><span class="s1">'$f$'</span><span class="p">,</span> <span class="sa">r</span><span class="s1">'$\lambda$'</span><span class="p">]]</span>
+<span class="n">scale</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'C'</span><span class="p">,</span> <span class="s1">'C#'</span><span class="p">,</span> <span class="s1">'D'</span><span class="p">,</span> <span class="s1">'D#'</span><span class="p">,</span> <span class="s1">'E'</span><span class="p">,</span> <span class="s1">'F'</span><span class="p">,</span> <span class="s1">'F#'</span><span class="p">,</span> <span class="s1">'G'</span><span class="p">,</span> <span class="s1">'G#'</span><span class="p">,</span> <span class="s1">'A'</span><span class="p">,</span> <span class="s1">'A#'</span><span class="p">,</span> <span class="s1">'B'</span><span class="p">]</span>
+</pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+      <div class="jp-Cell-inputWrapper">
+        <div class="jp-InputArea jp-Cell-inputArea">
+          <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[7]:</div>
+          <div
+            class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor"
+            data-type="inline"
+          >
+            <div class="CodeMirror cm-s-jupyter">
+              <div class="highlight hl-ipython3">
+                <pre><span></span><span class="n">notes</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">fw</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">scale</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">octaves</span><span class="p">)</span>
+<span class="n">notes</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">MultiIndex</span><span class="o">.</span><span class="n">from_tuples</span><span class="p">(</span><span class="n">notes</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s1">'Octave'</span><span class="p">,</span><span class="s1">'Hz | cm'</span><span class="p">])</span>
+<span class="n">notes</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="jp-Cell-outputWrapper">
+        <div class="jp-OutputArea jp-Cell-outputArea">
+          <div class="jp-OutputArea-child">
+            <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[7]:</div>
+
+            <div
+              class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult"
+              data-mime-type="text/html"
+            >
+              <div>
+                <style scoped="">
+                  .dataframe tbody tr th:only-of-type {
+                    vertical-align: middle;
+                  }
+
+                  .dataframe tbody tr th {
+                    vertical-align: top;
+                  }
+
+                  .dataframe thead th {
+                    text-align: right;
+                  }
+                </style>
+                <table border="1" class="dataframe">
+                  <thead>
+                    <tr style="text-align: right">
+                      <th></th>
+                      <th></th>
+                      <th>C</th>
+                      <th>C#</th>
+                      <th>D</th>
+                      <th>D#</th>
+                      <th>E</th>
+                      <th>F</th>
+                      <th>F#</th>
+                      <th>G</th>
+                      <th>G#</th>
+                      <th>A</th>
+                      <th>A#</th>
+                      <th>B</th>
+                    </tr>
+                    <tr>
+                      <th>Octave</th>
+                      <th>Hz | cm</th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th rowspan="2" valign="top">Octave 0</th>
+                      <th>$f$</th>
+                      <td>16.35</td>
+                      <td>17.32</td>
+                      <td>18.35</td>
+                      <td>19.45</td>
+                      <td>20.60</td>
+                      <td>21.83</td>
+                      <td>23.12</td>
+                      <td>24.50</td>
+                      <td>25.96</td>
+                      <td>27.50</td>
+                      <td>29.14</td>
+                      <td>30.87</td>
+                    </tr>
+                    <tr>
+                      <th>$\lambda$</th>
+                      <td>2097.65</td>
+                      <td>1979.92</td>
+                      <td>1868.80</td>
+                      <td>1763.91</td>
+                      <td>1664.91</td>
+                      <td>1571.47</td>
+                      <td>1483.27</td>
+                      <td>1400.02</td>
+                      <td>1321.44</td>
+                      <td>1247.27</td>
+                      <td>1177.27</td>
+                      <td>1111.19</td>
+                    </tr>
+                    <tr>
+                      <th rowspan="2" valign="top">Octave 1</th>
+                      <th>$f$</th>
+                      <td>32.70</td>
+                      <td>34.65</td>
+                      <td>36.71</td>
+                      <td>38.89</td>
+                      <td>41.20</td>
+                      <td>43.65</td>
+                      <td>46.25</td>
+                      <td>49.00</td>
+                      <td>51.91</td>
+                      <td>55.00</td>
+                      <td>58.27</td>
+                      <td>61.74</td>
+                    </tr>
+                    <tr>
+                      <th>$\lambda$</th>
+                      <td>1048.83</td>
+                      <td>989.96</td>
+                      <td>934.40</td>
+                      <td>881.96</td>
+                      <td>832.45</td>
+                      <td>785.73</td>
+                      <td>741.63</td>
+                      <td>700.01</td>
+                      <td>660.72</td>
+                      <td>623.64</td>
+                      <td>588.63</td>
+                      <td>555.60</td>
+                    </tr>
+                    <tr>
+                      <th rowspan="2" valign="top">Octave 2</th>
+                      <th>$f$</th>
+                      <td>65.41</td>
+                      <td>69.30</td>
+                      <td>73.42</td>
+                      <td>77.78</td>
+                      <td>82.41</td>
+                      <td>87.31</td>
+                      <td>92.50</td>
+                      <td>98.00</td>
+                      <td>103.83</td>
+                      <td>110.00</td>
+                      <td>116.54</td>
+                      <td>123.47</td>
+                    </tr>
+                    <tr>
+                      <th>$\lambda$</th>
+                      <td>524.41</td>
+                      <td>494.98</td>
+                      <td>467.20</td>
+                      <td>440.98</td>
+                      <td>416.23</td>
+                      <td>392.87</td>
+                      <td>370.82</td>
+                      <td>350.00</td>
+                      <td>330.36</td>
+                      <td>311.82</td>
+                      <td>294.32</td>
+                      <td>277.80</td>
+                    </tr>
+                    <tr>
+                      <th rowspan="2" valign="top">Octave 3</th>
+                      <th>$f$</th>
+                      <td>130.81</td>
+                      <td>138.59</td>
+                      <td>146.83</td>
+                      <td>155.56</td>
+                      <td>164.81</td>
+                      <td>174.61</td>
+                      <td>185.00</td>
+                      <td>196.00</td>
+                      <td>207.65</td>
+                      <td>220.00</td>
+                      <td>233.08</td>
+                      <td>246.94</td>
+                    </tr>
+                    <tr>
+                      <th>$\lambda$</th>
+                      <td>262.21</td>
+                      <td>247.49</td>
+                      <td>233.60</td>
+                      <td>220.49</td>
+                      <td>208.11</td>
+                      <td>196.43</td>
+                      <td>185.41</td>
+                      <td>175.00</td>
+                      <td>165.18</td>
+                      <td>155.91</td>
+                      <td>147.16</td>
+                      <td>138.90</td>
+                    </tr>
+                    <tr>
+                      <th rowspan="2" valign="top">Octave 4</th>
+                      <th>$f$</th>
+                      <td>261.63</td>
+                      <td>277.18</td>
+                      <td>293.66</td>
+                      <td>311.13</td>
+                      <td>329.63</td>
+                      <td>349.23</td>
+                      <td>369.99</td>
+                      <td>392.00</td>
+                      <td>415.30</td>
+                      <td>440.00</td>
+                      <td>466.16</td>
+                      <td>493.88</td>
+                    </tr>
+                    <tr>
+                      <th>$\lambda$</th>
+                      <td>131.10</td>
+                      <td>123.75</td>
+                      <td>116.80</td>
+                      <td>110.24</td>
+                      <td>104.06</td>
+                      <td>98.22</td>
+                      <td>92.70</td>
+                      <td>87.50</td>
+                      <td>82.59</td>
+                      <td>77.95</td>
+                      <td>73.58</td>
+                      <td>69.45</td>
+                    </tr>
+                    <tr>
+                      <th rowspan="2" valign="top">Octave 5</th>
+                      <th>$f$</th>
+                      <td>523.25</td>
+                      <td>554.37</td>
+                      <td>587.33</td>
+                      <td>622.25</td>
+                      <td>659.26</td>
+                      <td>698.46</td>
+                      <td>739.99</td>
+                      <td>783.99</td>
+                      <td>830.61</td>
+                      <td>880.00</td>
+                      <td>932.33</td>
+                      <td>987.77</td>
+                    </tr>
+                    <tr>
+                      <th>$\lambda$</th>
+                      <td>65.55</td>
+                      <td>61.87</td>
+                      <td>58.40</td>
+                      <td>55.12</td>
+                      <td>52.03</td>
+                      <td>49.11</td>
+                      <td>46.35</td>
+                      <td>43.75</td>
+                      <td>41.29</td>
+                      <td>38.98</td>
+                      <td>36.79</td>
+                      <td>34.72</td>
+                    </tr>
+                    <tr>
+                      <th rowspan="2" valign="top">Octave 6</th>
+                      <th>$f$</th>
+                      <td>1046.50</td>
+                      <td>1108.73</td>
+                      <td>1174.66</td>
+                      <td>1244.51</td>
+                      <td>1318.51</td>
+                      <td>1396.91</td>
+                      <td>1479.98</td>
+                      <td>1567.98</td>
+                      <td>1661.22</td>
+                      <td>1760.00</td>
+                      <td>1864.66</td>
+                      <td>1975.53</td>
+                    </tr>
+                    <tr>
+                      <th>$\lambda$</th>
+                      <td>32.78</td>
+                      <td>30.94</td>
+                      <td>29.20</td>
+                      <td>27.56</td>
+                      <td>26.01</td>
+                      <td>24.55</td>
+                      <td>23.18</td>
+                      <td>21.88</td>
+                      <td>20.65</td>
+                      <td>19.49</td>
+                      <td>18.39</td>
+                      <td>17.36</td>
+                    </tr>
+                    <tr>
+                      <th rowspan="2" valign="top">Octave 7</th>
+                      <th>$f$</th>
+                      <td>2093.00</td>
+                      <td>2217.46</td>
+                      <td>2349.32</td>
+                      <td>2489.02</td>
+                      <td>2637.02</td>
+                      <td>2793.83</td>
+                      <td>2959.96</td>
+                      <td>3135.96</td>
+                      <td>3322.44</td>
+                      <td>3520.00</td>
+                      <td>3729.31</td>
+                      <td>3951.07</td>
+                    </tr>
+                    <tr>
+                      <th>$\lambda$</th>
+                      <td>16.39</td>
+                      <td>15.47</td>
+                      <td>14.60</td>
+                      <td>13.78</td>
+                      <td>13.01</td>
+                      <td>12.28</td>
+                      <td>11.59</td>
+                      <td>10.94</td>
+                      <td>10.32</td>
+                      <td>9.74</td>
+                      <td>9.20</td>
+                      <td>8.68</td>
+                    </tr>
+                    <tr>
+                      <th rowspan="2" valign="top">Octave 8</th>
+                      <th>$f$</th>
+                      <td>4186.01</td>
+                      <td>4434.92</td>
+                      <td>4698.64</td>
+                      <td>4978.03</td>
+                      <td>5274.04</td>
+                      <td>5587.65</td>
+                      <td>5919.91</td>
+                      <td>6271.93</td>
+                      <td>6644.88</td>
+                      <td>7040.00</td>
+                      <td>7458.62</td>
+                      <td>7902.13</td>
+                    </tr>
+                    <tr>
+                      <th>$\lambda$</th>
+                      <td>8.19</td>
+                      <td>7.73</td>
+                      <td>7.30</td>
+                      <td>6.89</td>
+                      <td>6.50</td>
+                      <td>6.14</td>
+                      <td>5.79</td>
+                      <td>5.47</td>
+                      <td>5.16</td>
+                      <td>4.87</td>
+                      <td>4.60</td>
+                      <td>4.34</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
