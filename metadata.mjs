@@ -6,7 +6,7 @@ export const HEADER = {
 export const INDEX = [
   // ! Generative
   {
-    id: "generative",
+    id: "Generative",
     name: "Generative",
     description:
       "Procedural generation, algorithmic design, graphics programming, creative imaging ..",
@@ -62,7 +62,7 @@ export const INDEX = [
   },
   // ! Simulation
   {
-    id: "simulation",
+    id: "Simulation",
     name: "Simulation",
     description:
       "Physics, nonlinear systems, dynamics, chaotic stuff, natural phenomena ..",
@@ -95,7 +95,7 @@ export const INDEX = [
   },
   // ! M.L. + A.I.
   {
-    id: "ml-and-ai",
+    id: "ML-and-AI",
     name: "M.L. + A.I.",
     description:
       "Experiments involving <em>machine learning</em>, <em>artificial intelligence</em> and so on.",
@@ -116,7 +116,7 @@ export const INDEX = [
   },
   // ! Sound Design
   {
-    id: "sound-design",
+    id: "Sound-Design",
     name: "Sound Design",
     description:
       "Algorithmic composition, audio programming, sound effects, audio synthesis ..",
@@ -149,7 +149,7 @@ export const INDEX = [
   },
   // ! Computer Graphics
   {
-    id: "computer-graphics",
+    id: "Computer-Graphics",
     name: "Computer Graphics",
     description:
       "Demonstrations and studies involving some quite important topics about <em>computer graphics</em>.",
@@ -180,7 +180,7 @@ export const INDEX = [
   },
   // ! Tips & Tricks
   {
-    id: "tips-and-tricks",
+    id: "Tips-and-Tricks",
     name: "Tips & Tricks",
     description:
       "A gathering of <em>Tips & Tricks</em> involving any supporting information for <em>creative coding</em> in general.",
