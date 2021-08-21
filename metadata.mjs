@@ -12,6 +12,12 @@ export const INDEX = [
       "Procedural generation, algorithmic design, graphics programming, creative imaging ..",
     notebooks: [
       {
+        id: "wall-of-letters",
+        name: "Wall of Letters",
+        description:
+          "A responsive experiment with character styling and layout.",
+      },
+      {
         id: "imgFX_pseudoHalftone",
         name: "Pseudo-Halftone",
         description:
