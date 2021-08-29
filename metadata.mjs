@@ -116,7 +116,7 @@ export const INDEX = [
         id: "pixel-art-depixelization-deepNN",
         name: "Depixelizing Pixel Art",
         description:
-          "A pretty naive approach for <em>upscalling</em> and <em>depixelizing</em> a very low-res <em>pixel art</em> using em>deep Neural Network</em>.",
+          "A pretty naive approach for <em>upscalling</em> and <em>depixelizing</em> a very low-res <em>pixel art</em> using <em>deep Neural Network</em>.",
       },
     ],
   },
@@ -131,7 +131,7 @@ export const INDEX = [
         id: "waveform_sinusoidal",
         name: "Sinusoidal Periodic Waveform",
         description:
-          "Overview about <em>sinusoidal periodic waveform</em> or em>sine wave</em> function.",
+          "Overview about <em>sinusoidal periodic waveform</em> or <em>sine wave</em> function.",
       },
       {
         id: "waveform_non-sinusoidal",
