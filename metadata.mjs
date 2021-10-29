@@ -1,6 +1,6 @@
 export const HEADER = {
   title: `Creative Coding Notebooks`,
-  description: `A collection of <span class="notebooks">notebooks</span> about <span class="creative-coding">Creative Coding</span>.`,
+  description: `An authorial collection of <span class="creative-coding">Creative Coding</span> <span class="notebooks">notebooks</span>.`,
 };
 
 export const INDEX = [
