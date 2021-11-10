@@ -2900,6 +2900,8 @@ table.alt tbody tr td {
 
 #header .description .notebooks {
   border-bottom: 1px dotted #f2b90d;
+  background-color: rgba(242, 185, 13, 0.1);
+  padding: 0 0.2em 0.2em 0.2em;
 }
 
 #header .description .creative-coding {
