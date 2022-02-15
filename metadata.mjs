@@ -192,6 +192,11 @@ export const INDEX = [
       "A gathering of <em>Tips & Tricks</em> involving any supporting information for <em>creative coding</em> in general.",
     notebooks: [
       {
+        id: "web-scraping",
+        name: "Web Scraping",
+        description: "Some demonstrations of how to scrape data on the web.",
+      },
+      {
         id: "basics_Numba",
         name: "Basics [Numba]",
         description:
