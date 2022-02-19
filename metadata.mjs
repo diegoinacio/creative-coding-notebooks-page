@@ -107,6 +107,12 @@ export const INDEX = [
       "Experiments involving <em>machine learning</em>, <em>artificial intelligence</em> and so on.",
     notebooks: [
       {
+        id: "text-generation_markov-chain",
+        name: "Text Generation",
+        description:
+          "Text generation with <em>Markov Chain</em>, using characters as base.",
+      },
+      {
         id: "image_approximation_deepNN",
         name: "Image Approximation",
         description:
