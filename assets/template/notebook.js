@@ -25,7 +25,7 @@ if (notebook_link) {
   div_buttons.appendChild(a_button);
 }
 
-// * Return to Computer Vision Notebooks
+// * Return to Creative Coding Notebooks
 a_button = document.createElement("a");
 a_button.href = "https://diegoinacio.github.io/creative-coding-notebooks-page/";
 a_button.innerHTML = `
