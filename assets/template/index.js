@@ -20,7 +20,7 @@ Array.from(HEADER.title).forEach((e) => {
 header.innerHTML += `<div class="description">${HEADER.description}</div>`;
 header.innerHTML += `
   <div class="signature">
-    by <a href="https://diegoinacio.github.io/" class="name" target="_blank">
+    Created with ❤️ by <a href="https://diegoinacio.github.io/" class="name" target="_blank">
       Diego Inácio
     </a>
   </div>
