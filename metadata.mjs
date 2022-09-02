@@ -12,6 +12,12 @@ export const INDEX = [
       "Procedural generation, algorithmic design, graphics programming, creative imaging ..",
     notebooks: [
       {
+        id: "svg-quadtree",
+        name: "Quadtree",
+        description:
+          "2D image partition using Quadtrees and <em>SVG graphics</em>.",
+      },
+      {
         id: "wall-of-letters",
         name: "Wall of Letters",
         description:
