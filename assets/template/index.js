@@ -3,18 +3,24 @@ import { HEADER, INDEX } from "../../metadata.mjs";
 // ! Build header
 const header = document.querySelector("header#header");
 
-// * Colored title
-const h1 = document.createElement("h1");
-h1.className = "title";
-header.appendChild(h1);
+const threshold = Math.random();
+if (threshold > 0.5) {
+  // * Black title
+  header.innerHTML = `<h1 class="title">${HEADER.title}</h1>`;
+} else {
+  // * Colored title
+  const h1 = document.createElement("h1");
+  h1.className = "title";
+  header.appendChild(h1);
 
-Array.from(HEADER.title).forEach((e) => {
-  let span = document.createElement("span");
-  span.innerText = e;
-  let hue = Math.random() * 360;
-  span.style = `color: hsl(${hue}, 95%, 80%)`;
-  h1.appendChild(span);
-});
+  Array.from(HEADER.title).forEach((e) => {
+    let span = document.createElement("span");
+    span.innerText = e;
+    let hue = Math.random() * 360;
+    span.style = `color: hsl(${hue}, 70%, 50%);`;
+    h1.appendChild(span);
+  });
+}
 
 // * Description and signature
 header.innerHTML += `<div class="description">${HEADER.description}</div>`;
@@ -79,10 +85,12 @@ for (const [i, s] of INDEX.entries()) {
 // ! Build footer
 const YEAR_FOOTER = new Date().getFullYear();
 const PAGE_LINK = "diegoinacio.github.io";
+const GH_LINK = "github.com/diegoinacio";
 
 document.querySelector("footer#footer").innerHTML = `
   <p class="copyright">
-    © ${YEAR_FOOTER} Diego Inácio. <br />
-    <a href="https://${PAGE_LINK}/" target="_blank">${PAGE_LINK}</a>
+    © ${YEAR_FOOTER} Diego Inácio. <br/><br/>
+    <a href="https://${PAGE_LINK}/" target="_blank" title="personal website">${PAGE_LINK}</a> <br/>
+    <a href="https://${GH_LINK}/" target="_blank" title="GitHub">${GH_LINK}</a>
   </p>
 `;
