@@ -12,6 +12,11 @@ export const INDEX = [
       "Procedural generation, algorithmic design, graphics programming, creative imaging ..",
     notebooks: [
       {
+        id: "ascii-generator",
+        name: "Image to ASCII Generator",
+        description: "Implementation of a simple image to ASCII generator.",
+      },
+      {
         id: "svg-quadtree",
         name: "Quadtree",
         description:
