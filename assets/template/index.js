@@ -2,31 +2,11 @@ import { HEADER, INDEX } from "../../metadata.mjs";
 
 // ! Build header
 const header = document.querySelector("header#header");
-
-const threshold = Math.random();
-if (threshold > 0.5) {
-  // * Black title
-  header.innerHTML = `<h1 class="title">${HEADER.title}</h1>`;
-} else {
-  // * Colored title
-  const h1 = document.createElement("h1");
-  h1.className = "title";
-  header.appendChild(h1);
-
-  Array.from(HEADER.title).forEach((e) => {
-    let span = document.createElement("span");
-    span.innerText = e;
-    let hue = Math.random() * 360;
-    span.style = `color: hsl(${hue}, 70%, 50%);`;
-    h1.appendChild(span);
-  });
-}
-
-// * Description and signature
+header.innerHTML = `<h1 class="title">${HEADER.title}</h1>`;
 header.innerHTML += `<div class="description">${HEADER.description}</div>`;
 header.innerHTML += `
   <div class="signature">
-    Created with ❤️ by <a href="https://diegoinacio.github.io/" class="name" target="_blank">
+    Created with ❤️ by <a href="https://diegoinacio.github.io/" class="name" target="_blank" title="personal website">
       Diego Inácio
     </a>
   </div>
@@ -46,7 +26,10 @@ main.innerHTML = "";
 for (const [i, s] of INDEX.entries()) {
   // * Include section to navigation bar
   const active = !i ? "class=active" : "";
-  nav_ul.innerHTML += `<li><a href="#${s.id}"${active}>${s.name}</a></li>`;
+  const index = `<span class="index">${i + 1}.</span>`;
+  const title = `${index} ${s.name}`;
+  const link = `<a href="#${s.id}"${active}>${title}</a>`;
+  nav_ul.innerHTML += `<li>${link}</li>`;
 
   // ! Build section
   const section = document.createElement("section");
@@ -59,7 +42,7 @@ for (const [i, s] of INDEX.entries()) {
   header.className = "major";
   section.appendChild(header);
 
-  header.innerHTML += `<h2>${s.name}</h2>`;
+  header.innerHTML += `<h2>${title}</h2>`;
   header.innerHTML += `<p>${s.description}</p>`;
 
   // * Include notebooks
