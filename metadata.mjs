@@ -209,6 +209,12 @@ export const INDEX = [
       "A gathering of <em>Tips & Tricks</em> involving any supporting information for <em>creative coding</em> in general.",
     notebooks: [
       {
+        id: "connect_openai_api",
+        name: "Connect to OpenAI API",
+        description:
+          "Step by step how to connect to <em>OpenAI API</em> and brief introduction.",
+      },
+      {
         id: "web-scraping",
         name: "Web Scraping",
         description: "Some demonstrations of how to scrape data on the web.",
