@@ -119,7 +119,7 @@ export const INDEX = [
     notebooks: [
       {
         id: "text-generation_markov-chain",
-        name: "Text Generation",
+        name: "Text Generation [Markov Chain]",
         description:
           "Text generation with <em>Markov Chain</em>, using characters as base.",
       },
